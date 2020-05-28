@@ -55,8 +55,8 @@ class SWBFWindow(QMainWindow):
 
         if QFileInfo(STEAM_PATH).exists():
             self._file_select_value.setText(STEAM_PATH)
-        elif QFileInfo(GOG_PATH).exists():
-            self._file_select_value.setText(GOG_PATH)
+        # elif QFileInfo(GOG_PATH).exists():
+        #     self._file_select_value.setText(GOG_PATH)
 
         # Tab widget
         self._tabs = QTabWidget()
