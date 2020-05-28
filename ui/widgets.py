@@ -1,6 +1,5 @@
 from math import log
 
-from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QListWidget, QWidget, QHBoxLayout, QLabel, QSlider, QVBoxLayout, QPushButton, QFrame, \
     QLineEdit, QCheckBox, QStyle
@@ -10,7 +9,7 @@ class PairWidget(QWidget):
     def __init__(self, first, second):
         super().__init__()
 
-        self.change_callback = None
+        self._change_callback = None
         self._box = QHBoxLayout(self)
         self._first = first
         self._second = second
@@ -24,11 +23,11 @@ class PairWidget(QWidget):
         raise NotImplementedError
 
     def changed(self):
-        if self.change_callback:
-            self.change_callback()
+        if self._change_callback:
+            self._change_callback()
 
     def on_change(self, callback):
-        self.change_callback = callback
+        self._change_callback = callback
         return self
 
     def first(self):
@@ -140,10 +139,8 @@ class MapSelection(QWidget):
         self._rbutton = QPushButton(icon=self.style().standardIcon(QStyle.SP_ArrowRight))
         self._lbutton = QPushButton(icon=self.style().standardIcon(QStyle.SP_ArrowLeft))
         self._available_list = QListWidget()
-        #self._available_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self._available_list.addItems(available_maps)
         self._selected_list = QListWidget()
-        #self._selected_list.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
         self._selected_list.addItems(selected_maps)
         self._vbox.addWidget(self._rbutton)
         self._vbox.addWidget(self._lbutton)

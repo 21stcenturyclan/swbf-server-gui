@@ -1,4 +1,4 @@
-from PyQt5 import Qt, QtCore
+from PyQt5 import QtCore
 from PyQt5.QtWidgets import QLineEdit, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QPlainTextEdit, QTreeWidget, \
     QTreeWidgetItem, QScrollArea
 
@@ -54,7 +54,7 @@ class ServerTab(QWidget):
 
         self._create(name)
         self._init = True
-        self.maps.add(0)
+        self._map_widget.add(0)
         self._new_map(MAP_NAMES[0])
         self._update_options()
 
@@ -82,69 +82,69 @@ class ServerTab(QWidget):
         self._hbox.addWidget(self._right_wrapper)
 
     def _create_left_column(self, name):
-        self.name = LineEditPairWidget('Servername:', name).on_change(self._update_options)
-        self.password = LineEditPairWidget('Password:', '').on_change(self._update_options)
-        self.admin_pw = LineEditPairWidget('Admin password:', '').on_change(self._update_options)
+        self._server_name = LineEditPairWidget('Servername:', name).on_change(self._update_options)
+        self._server_password = LineEditPairWidget('Password:', '').on_change(self._update_options)
+        self._server_admin_pw = LineEditPairWidget('Admin password:', '').on_change(self._update_options)
 
-        self.autonet = CheckboxPairWidget('Dedicated:').on_change(self._update_options)
-        self.win = CheckboxPairWidget('Windowed:').on_change(self._update_options)
-        self.resolution = PairWidget(QLabel('Resolution:'), PairWidget(QLineEdit('200'), QLineEdit('200')))
-        self.lan = CheckboxPairWidget('Lan:').on_change(self._update_options)
-        self.tps = SliderPairWidget('TPS:', 30, 60, 60).on_change(self._update_options)
-        self.throttle = SliderPairWidget('Bandwidth per Client:', 1000, 10000, 6000).on_change(self._update_options)
-        self.spawn = SliderPairWidget('Spawn:', 0, 10, 2).on_change(self._update_options)
-        self.log = CheckboxPairWidget('Log:').on_change(self._update_options)
+        self._server_type = CheckboxPairWidget('Dedicated:').on_change(self._update_options)
+        self._windowed = CheckboxPairWidget('Windowed:').on_change(self._update_options)
+        self._resolution = PairWidget(QLabel('Resolution:'), PairWidget(QLineEdit('200'), QLineEdit('200')))
+        self._lan = CheckboxPairWidget('Lan:').on_change(self._update_options)
+        self._ticks_per_second = SliderPairWidget('TPS:', 30, 60, 60).on_change(self._update_options)
+        self._throttle = SliderPairWidget('Bandwidth per Client:', 1000, 10000, 6000).on_change(self._update_options)
+        self._spawn = SliderPairWidget('Spawn:', 0, 10, 2).on_change(self._update_options)
+        self._log = CheckboxPairWidget('Log:').on_change(self._update_options)
 
-        self.player_limit = SliderPairWidget('Player limit:', 1, 32, 20).on_change(self._update_options)
-        self.player_count = SliderPairWidget('Player count:', 1, 32, 2).on_change(self._update_options)
-        self.player_select = CheckboxPairWidget('Player select:', True).on_change(self._update_options)
-        self.names = CheckboxPairWidget('Player names:', True).on_change(self._update_options)
-        self.ai = SliderPairWidget('AI:', 0, 32, 0).on_change(self._update_options)
-        self.difficulty = SliderPairWidget('AI Difficulty:', 1, 3, 2).on_change(self._update_options)
-        self.team_damage = CheckboxPairWidget('Team damage:', True).on_change(self._update_options)
-        self.heroes = CheckboxPairWidget('Heroes:').on_change(self._update_options)
-        self.invinc = CheckboxPairWidget('Invincible:').on_change(self._update_options)
-        self.ammo = CheckboxPairWidget('Unlimited Ammo:').on_change(self._update_options)
+        self._player_limit = SliderPairWidget('Player limit:', 1, 32, 20).on_change(self._update_options)
+        self._player_count = SliderPairWidget('Player count:', 1, 32, 2).on_change(self._update_options)
+        self._player_select = CheckboxPairWidget('Player select:', True).on_change(self._update_options)
+        self._show_names = CheckboxPairWidget('Player names:', True).on_change(self._update_options)
+        self._number_of_bots = SliderPairWidget('Bots:', 0, 32, 0).on_change(self._update_options)
+        self._bot_difficulty = SliderPairWidget('AI Difficulty:', 1, 3, 2).on_change(self._update_options)
+        self._team_damage = CheckboxPairWidget('Team damage:', True).on_change(self._update_options)
+        self._heroes = CheckboxPairWidget('Heroes:').on_change(self._update_options)
+        self._invincible = CheckboxPairWidget('Invincible:').on_change(self._update_options)
+        self._unlimited_ammo = CheckboxPairWidget('Unlimited Ammo:').on_change(self._update_options)
 
-        self.maps = MapSelection(MAP_NAMES, [])
-        self.tickets = SliderPairWidget('Tickets:', 1, 300, 75).on_change(self._update_options)
-        self.era = CheckboxPairWidget('CW/GCW:').on_change(self._update_options)
-        self._random_maps = CheckboxPairWidget('Random:').on_change(self._update_options)
+        self._map_widget = MapSelection(MAP_NAMES, [])
+        self._map_tickets = SliderPairWidget('Tickets:', 1, 300, 75).on_change(self._update_options)
+        self._map_era = CheckboxPairWidget('CW/GCW:').on_change(self._update_options)
+        self._random_maps = CheckboxPairWidget('Randomize maps:').on_change(self._update_options)
 
-        self._left.addWidget(self.name)
-        self._left.addWidget(self.password)
-        self._left.addWidget(self.admin_pw)
-
-        self._left.addWidget(Separator())
-
-        self._left.addWidget(self.autonet)
-        self._left.addWidget(self.lan)
-        self._left.addWidget(self.throttle)
-        self._left.addWidget(self.tps)
-        self._left.addWidget(self.log)
+        self._left.addWidget(self._server_name)
+        self._left.addWidget(self._server_password)
+        self._left.addWidget(self._server_admin_pw)
 
         self._left.addWidget(Separator())
 
-        self._left.addWidget(self.player_limit)
-        self._left.addWidget(self.player_count)
-        self._left.addWidget(self.player_select)
-        self._left.addWidget(self.names)
-        self._left.addWidget(self.ai)
-        self._left.addWidget(self.difficulty)
-        self._left.addWidget(self.heroes)
-        self._left.addWidget(self.invinc)
-        self._left.addWidget(self.ammo)
+        self._left.addWidget(self._server_type)
+        self._left.addWidget(self._lan)
+        self._left.addWidget(self._throttle)
+        self._left.addWidget(self._ticks_per_second)
+        self._left.addWidget(self._log)
 
         self._left.addWidget(Separator())
 
-        self._left.addWidget(self.maps)
+        self._left.addWidget(self._player_limit)
+        self._left.addWidget(self._player_count)
+        self._left.addWidget(self._player_select)
+        self._left.addWidget(self._show_names)
+        self._left.addWidget(self._number_of_bots)
+        self._left.addWidget(self._bot_difficulty)
+        self._left.addWidget(self._heroes)
+        self._left.addWidget(self._invincible)
+        self._left.addWidget(self._unlimited_ammo)
+
+        self._left.addWidget(Separator())
+
+        self._left.addWidget(self._map_widget)
         self._left.addWidget(self._random_maps)
-        self._left.addWidget(self.era)
-        self._left.addWidget(self.tickets)
+        self._left.addWidget(self._map_era)
+        self._left.addWidget(self._map_tickets)
 
-        self.name.second().textChanged.connect(self.on_name_change)
-        self.maps.on_add(self._new_map)
-        self.maps.on_remove(self._drop_map)
+        self._server_name.second().textChanged.connect(self.on_name_change)
+        self._map_widget.on_add(self._new_map)
+        self._map_widget.on_remove(self._drop_map)
 
     def _create_right_column(self):
         self._options = QPlainTextEdit(self.options())
@@ -162,11 +162,11 @@ class ServerTab(QWidget):
         self._right.addWidget(self._maps)
 
     def on_name_change(self):
-        self._tab_parent.setTabText(self._tab_id, self.name.value())
+        self._tab_parent.setTabText(self._tab_id, self._server_name.value())
 
     def _new_map(self, map_name):
-        era = 'CW' if self.era.value() else 'GCW'
-        item = QTreeWidgetItem([str(map_name), str(self.tickets.value()), str(self.tickets.value()), era])
+        era = 'CW' if self._map_era.value() else 'GCW'
+        item = QTreeWidgetItem([str(map_name), str(self._map_tickets.value()), str(self._map_tickets.value()), era])
         self._maps.addTopLevelItem(item)
         self._update_options()
 
@@ -198,41 +198,41 @@ class ServerTab(QWidget):
                      '/win '
                      '/resolution {:d} {:d} '
                      ).format(
-            'dedicated' if self.autonet.second().isChecked() else 'pc',
-            self.name.value(),
-            self.ai.value(),
-            self.difficulty.value(),
-            self.player_count.value(),
-            self.player_limit.value(),
-            self.spawn.value(),
-            self.tps.value(),
-            self.throttle.value(),
-            int(self.resolution.second().first().text()),
-            int(self.resolution.second().second().text()),
+            'dedicated' if self._server_type.second().isChecked() else 'pc',
+            self._server_name.value(),
+            self._number_of_bots.value(),
+            self._bot_difficulty.value(),
+            self._player_count.value(),
+            self._player_limit.value(),
+            self._spawn.value(),
+            self._ticks_per_second.value(),
+            self._throttle.value(),
+            int(self._resolution.second().first().text()),
+            int(self._resolution.second().second().text()),
         )
 
-        if self.password.value():
-            option += '/password "' + self.password.value() + '" '
+        if self._server_password.value():
+            option += '/password "' + self._server_password.value() + '" '
 
-        if self.admin_pw.value():
-            option += '/adminpw "' + self.admin_pw.value() + '" '
+        if self._server_admin_pw.value():
+            option += '/adminpw "' + self._server_admin_pw.value() + '" '
 
-        if self.lan.value():
+        if self._lan.value():
             option += '/lan '
 
-        if self.log.value():
+        if self._log.value():
             option += '/loginfinalscore '
 
-        if not self.names.value():
+        if not self._show_names.value():
             option += '/nonames '
 
-        if not self.team_damage.value():
+        if not self._team_damage.value():
             option += '/noteamdamage '
 
-        if self.player_select.value():
+        if self._player_select.value():
             option += '/sideselect '
 
-        if self.heroes.value():
+        if self._heroes.value():
             option += '/heroes '
 
         if self._random_maps.value():
@@ -246,5 +246,8 @@ class ServerTab(QWidget):
             map_era = item.text(3)
             if map_era in MAP_ID[map_name]:
                 option += MAP_ID[map_name][map_era] + ' {0} {0} '.format(map_tickets)
+            # Map has only one era
+            elif len(MAP_ID[map_name]) == 1:
+                option += list(MAP_ID[map_name].values())[0] + ' {0} {0} '.format(map_tickets)
 
         return option

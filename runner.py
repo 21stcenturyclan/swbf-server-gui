@@ -1,7 +1,4 @@
-import os
-import sys
 import subprocess
-from threading import Thread
 
 
 class Runner:
@@ -9,15 +6,8 @@ class Runner:
         self._processes = []
 
     def add_process(self, exe, options):
-        print(exe, options, sep='')
-        sys.stdout.flush()
+        self._processes.append(subprocess.Popen(exe + ' ' + options))
 
-        proc = subprocess.Popen(exe + ' ' + options)
-        proc.communicate()
-
-        # t = Thread(target=run, args=[exe], daemon=True)
-        # t.run()
-
-
-def run(exe):
-    subprocess.call([exe])
+    def stop_process(self):
+        if len(self._processes):
+            self._processes[0].kill()
